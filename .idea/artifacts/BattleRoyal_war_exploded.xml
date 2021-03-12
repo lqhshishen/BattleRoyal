@@ -16,6 +16,14 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.21" />
           <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.11.4" />
+          <element id="library" level="project" name="Maven: javax.json.bind:javax.json.bind-api:1.0" />
+          <element id="library" level="project" name="Maven: org.eclipse:yasson:1.0" />
+          <element id="library" level="project" name="Maven: javax.json:javax.json-api:1.1" />
+          <element id="library" level="project" name="Maven: javax.enterprise:cdi-api:2.0" />
+          <element id="library" level="project" name="Maven: javax.el:javax.el-api:3.0.0" />
+          <element id="library" level="project" name="Maven: javax.interceptor:javax.interceptor-api:1.2" />
+          <element id="library" level="project" name="Maven: javax.inject:javax.inject:1" />
+          <element id="library" level="project" name="Maven: org.glassfish:javax.json:1.1" />
         </element>
       </element>
       <element id="directory" name="META-INF">

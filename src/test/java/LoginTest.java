@@ -13,7 +13,7 @@ public class LoginTest {
 //        Transaction transaction = session.beginTransaction();
 //
         UserTableEntity user = new UserTableEntity();
-        user.setEmail("543376397@qq.com");
+        user.setEmail("543376397@111.com");
         user.setLevel(0);
         user.setUserName("MirageLee");
         user.setPassword("a11223344");
@@ -22,6 +22,11 @@ public class LoginTest {
 //        session.close();
 //        sessionFactory.close();
         System.out.println(UserDao.getInstance().save(user));
+
+    }
+
+
+    private void a() {
 
     }
 }
