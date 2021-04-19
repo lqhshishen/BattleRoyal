@@ -4,8 +4,20 @@ package com.example.BattleRoyal.bean;
  * @author Owner
  */
 public class PlayerLocation {
+
+    User spwan;
+
     private Angle angle;
+
     private Position position;
+
+    public User getSpwan() {
+        return spwan;
+    }
+
+    public void setSpwan(User spwan) {
+        this.spwan = spwan;
+    }
 
     public Angle getAngle() {
         return angle;
