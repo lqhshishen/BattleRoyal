@@ -8,4 +8,13 @@ public class Packet {
     public String message;
     public User loginInfo;
     public PlayerLocation spwan;
+
+    @Override
+    public String toString() {
+        return "Packet{" +
+                "message='" + message + '\'' +
+                ", loginInfo=" + loginInfo.toString() +
+                ", spwan=" + spwan.toString() +
+                '}';
+    }
 }

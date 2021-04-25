@@ -22,6 +22,7 @@
           <element id="library" level="project" name="Maven: javax.interceptor:javax.interceptor-api:1.2" />
           <element id="library" level="project" name="Maven: javax.inject:javax.inject:1" />
           <element id="library" level="project" name="Maven: org.glassfish:javax.json:1.1" />
+          <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.2.76" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="BattleRoyal/web/Web" />

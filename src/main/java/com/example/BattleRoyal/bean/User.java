@@ -7,6 +7,23 @@ package com.example.BattleRoyal.bean;
 public class User {
     int userId;
     String username;
+    int userModel;
+
+    public int getUserModel() {
+        return userModel;
+    }
+
+    public void setUserModel(int userModel) {
+        this.userModel = userModel;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public int getUserId() {
         return userId;
@@ -16,11 +33,12 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return username;
-    }
-
-    public void setUserName(String userName) {
-        this.username = userName;
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", userModel=" + userModel +
+                '}';
     }
 }

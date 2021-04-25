@@ -3,16 +3,10 @@ package com.example.BattleRoyal.dao;
 import com.example.BattleRoyal.bean.UserTableEntity;
 
 import com.example.BattleRoyal.responsebean.BaseResponse;
-import com.mysql.cj.xdevapi.SqlStatement;
-import org.hibernate.HibernateException;
-import org.hibernate.engine.jdbc.env.spi.SQLStateType;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.query.Query;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+
+
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.persistence.PersistenceException;

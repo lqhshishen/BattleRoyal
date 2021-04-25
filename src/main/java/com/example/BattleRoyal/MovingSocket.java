@@ -5,12 +5,9 @@ import com.example.BattleRoyal.bean.Packet;
 import com.example.BattleRoyal.bean.PlayerLocation;
 import com.example.BattleRoyal.bean.User;
 
-import javax.json.Json;
-import javax.json.JsonObject;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.net.http.WebSocket;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -30,8 +27,11 @@ public class MovingSocket {
 
     private static int READY_COUNT = 0;
 
+    private boolean isReady = false;
 
     private static Map<Integer, User> USER_MAP = new HashMap<>();
+
+    public boolean isUse = false;
 
     @Override
     public boolean equals(Object o) {
@@ -68,22 +68,33 @@ public class MovingSocket {
     @OnMessage
     public void onMessage(String message, Session session) {
         JSONObject jsonObject = JSONObject.parseObject(message);
-        System.out.println(session.getId() + "xxxxx");
-        System.out.println(jsonObject.getString("message") + " " + message);
+        //System.out.println(session.getId() + "xxxxx");
+        //    System.out.println(jsonObject.getString("message") + " " + message);
         switch (jsonObject.getString("message")) {
             case "login":
                 //login
-                onLogin(jsonObject.getObject("loginInfo", User.class).getUserName(), session);
+                onLogin(jsonObject.getObject("loginInfo", User.class).getUsername(), session);
                 break;
             case "ready":
+                System.out.println("ready " + message);
                 //click ready return player position to every players
-                onReady(jsonObject.getObject("spwan", User.class), session);
+                onReady(jsonObject.getJSONObject("spwan").getObject("spwan", User.class), session);
                 break;
             case "movement":
                 onMovement(message);
                 break;
+            case "damage":
+                onDamaged(message);
+                break;
             default:
                 break;
+        }
+    }
+
+    public void onDamaged(String message) {
+        System.out.println(message);
+        for (MovingSocket socket : set) {
+            socket.sendMsg(message);
         }
     }
 
@@ -96,7 +107,7 @@ public class MovingSocket {
         for (MovingSocket socket : set) {
             if (session.getId().equals(socket.session.getId())) {
                 Packet packet = new Packet();
-                user.setUserName(username);
+                user.setUsername(username);
                 user.setUserId(id);
                 packet.loginInfo = user;
                 packet.message = "login";
@@ -107,18 +118,33 @@ public class MovingSocket {
     }
 
     public void onReady(User user, Session session) {
+        System.out.println("user = " + user.toString());
+        for (MovingSocket socket : set) {
+            if (session.getId().equals(socket.session.getId())) {
+                socket.isReady = true;
+                socket.user.setUserModel(user.getUserModel());
+                System.out.println("set user" + user.toString());
+            }
+        }
         USER_MAP.put(user.getUserId(), user);
         addReadyCount();
-        //if player number == 1 start the game. todo it's for test change it when the game finished
-        if (READY_COUNT == 1) {
+        System.out.println("ready count = " + READY_COUNT);
+        //if player number == 1 start the game. todo it's for test, change it when the game finished
+        if (READY_COUNT == 2) {
             onStart();
         }
     }
 
+    int[][] positionssss = new int[][]{{410, 2, 405}, {410, 2, 400}};
 
     public void onStart() {
         // give every players a position
+        int i = 0;
         for (MovingSocket movingSocket : set) {
+            if (!movingSocket.isReady) {
+                continue;
+            }
+            System.out.println();
             Packet packet = new Packet();
             packet.message = "start";
             packet.spwan = new PlayerLocation();
@@ -130,14 +156,21 @@ public class MovingSocket {
             angle.setZ(0);
 
             PlayerLocation.Position position = new PlayerLocation.Position();
-            position.setX(410);
-            position.setY(2);
-            position.setZ(405);
+            position.setX(positionssss[i][0]);
+            position.setY(positionssss[i][1]);
+            position.setZ(positionssss[i][2]);
 
             packet.spwan.setAngle(angle);
             packet.spwan.setPosition(position);
-
-            movingSocket.sendMsg(JSONObject.toJSONString(packet));
+            for (MovingSocket move : set) {
+                if (!move.isReady) {
+                    continue;
+                }
+                System.out.println("send " + packet.spwan.getSpwan().toString() + " to " + move.user.toString());
+                move.sendMsg(JSONObject.toJSONString(packet));
+                i++;
+            }
+            i = 0;
         }
     }
 
@@ -147,10 +180,12 @@ public class MovingSocket {
     }
 
     public void onMovement(String message) {
-        for (MovingSocket webSocket : set) {
-            for (MovingSocket socket : set) {
-                socket.sendMsg(message);
-            }
+        for (MovingSocket socket : set) {
+//            if (socket.user.getUsername().equals("b")) {
+//                System.out.println(message);
+//            }
+            socket.sendMsg(message);
+            socket.isUse = true;
         }
     }
 
@@ -161,12 +196,15 @@ public class MovingSocket {
     }
 
     public void sendMsg(String msg) {
-        print("send " + msg);
+        //print("send " + msg);
         try {
             this.session.getBasicRemote().sendText(msg);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IllegalStateException | IOException e) {
+//            e.printStackTrace();
+            System.out.println("wait return");
+            sendMsg(msg);
         }
+        // System.out.println(msg);
     }
 
     public static void addReadyCount() {
