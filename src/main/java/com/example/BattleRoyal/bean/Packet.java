@@ -8,6 +8,7 @@ public class Packet {
     public String message;
     public User loginInfo;
     public PlayerLocation spwan;
+    public int userNumber;
 
     @Override
     public String toString() {

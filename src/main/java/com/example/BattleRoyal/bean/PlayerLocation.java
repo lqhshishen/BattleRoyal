@@ -89,5 +89,14 @@ public class PlayerLocation {
         public void setZ(double z) {
             this.z = z;
         }
+
+        @Override
+        public String toString() {
+            return "Position{" +
+                    "x=" + x +
+                    ", y=" + y +
+                    ", z=" + z +
+                    '}';
+        }
     }
 }
